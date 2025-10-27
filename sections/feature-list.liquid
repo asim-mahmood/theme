@@ -1,0 +1,25 @@
+<div class="features">
+  {% for block in section.blocks %}
+    <div class="feature">
+      <h3>{{ block.settings.title }}</h3>
+      <p>{{ block.settings.text }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Feature list",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Feature title" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Feature description" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Feature list" }]
+}
+{% endschema %}

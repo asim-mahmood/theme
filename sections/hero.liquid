@@ -1,0 +1,49 @@
+<!-- sections/hero.liquid -->
+<section id="{{ section.id }}" class="hero-section">
+  {% if section.settings.image %}
+    <div class="hero-image">
+      <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ section.settings.alt }}">
+    </div>
+  {% endif %}
+  <div class="hero-content">
+    <h1>{{ section.settings.heading }}</h1>
+    <p>{{ section.settings.subheading }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to my demo store"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Built with Liquid & OS 2.0 sections"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Image alt text",
+      "default": "Hero image"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Default hero"
+    }
+  ]
+}
+{% endschema %}
