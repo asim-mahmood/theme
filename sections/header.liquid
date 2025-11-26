@@ -1,146 +1,105 @@
-<!-- ✅ NAVBAR COMPONENT -->
-<div x-data="{ open: false, mobileMenuOpen: false }" class="relative bg-white border-b border-gray-200">
-  <div class="mx-auto px-4 sm:px-6">
-    <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
+<!-- NAVBAR -->
+<header class="border-b border-gray-200 bg-white">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-6">
 
-      <!-- STORE NAME / LOGO -->
-      <div class="flex justify-start lg:flex-1 truncate">
-        <a href="/" class="flex items-center space-x-2">
-          <h1 class="text-xl font-bold truncate">STORE NAME</h1>
+      <!-- LOGO / STORE NAME -->
+      <div class="flex items-center space-x-2">
+        <a href="{{ routes.root_url }}" class="flex items-center space-x-2">
+          {% if settings.logo != blank %}
+            <img src="{{ settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" class="h-8 w-auto">
+          {% else %}
+            <span class="text-xl font-bold">{{ shop.name }}</span>
+          {% endif %}
         </a>
-      </div>
-
-      <!-- MOBILE MENU BUTTON -->
-      <div class="-mr-2 -my-2 ml-3 md:hidden">
-        <button @click="mobileMenuOpen = true" type="button"
-          class="bg-white p-2 inline-flex items-center justify-center rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-          <!-- Hamburger Icon -->
-          <svg class="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
       </div>
 
       <!-- DESKTOP MENU -->
-      <nav class="hidden md:flex space-x-10">
-        <a href="#" class="text-base text-gray-500 hover:text-gray-900">Link 1</a>
-
-        <a href="#" class="text-base text-gray-500 hover:text-gray-900">Link 2</a>
-
-        <!-- DROPDOWN MENU -->
-        <div class="relative" x-data="{ open: false }">
-          <button @click="open = !open" type="button"
-            class="inline-flex items-center text-base text-gray-500 hover:text-gray-900 focus:outline-none">
-            Link + 
-            <svg class="ml-2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          <!-- DROPDOWN PANEL -->
-          <div x-show="open" @click.away="open = false"
-            class="absolute z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-            <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
-              <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-
-                <a href="#" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100">
-                  <div class="ml-4">
-                    <p class="text-gray-900 text-base font-medium">Sublink 1</p>
-                  </div>
-                </a>
-
-                <a href="#" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100">
-                  <div class="ml-4">
-                    <p class="text-gray-900 text-base font-medium">Sublink 2</p>
-                  </div>
-                </a>
-
-                <a href="#" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100">
-                  <div class="ml-4">
-                    <p class="text-gray-900 text-base font-medium">Sublink 3</p>
-                  </div>
-                </a>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <!-- RIGHT SIDE LINKS -->
-      <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
-        <a href="/cart" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
-          Cart
-        </a>
-        <a href="#" class="text-base text-gray-500 hover:text-gray-900">Login</a>
-        <a href="#" class="text-base text-gray-500 hover:text-gray-900">Register</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ✅ MOBILE MENU -->
-  <div x-show="mobileMenuOpen" class="absolute z-20 top-0 inset-x-0 p-2 transform origin-top-left md:hidden"
-    x-transition>
-    <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
-      <div class="p-5 divide-y-2 divide-gray-50">
-
-        <!-- HEADER -->
-        <div class="flex items-center justify-between pb-3">
-          <div>
-            <h1 class="text-lg text-gray-700 font-medium">MENU</h1>
-          </div>
-          <div class="-mr-2">
-            <button @click="mobileMenuOpen = false" type="button"
-              class="bg-white rounded-md p-2 text-gray-500 hover:text-gray-900 focus:outline-none">
-              <!-- Close Icon -->
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- MOBILE NAV LINKS -->
-        <div class="pt-3">
-          <nav class="grid gap-y-3">
-
-            <a href="#" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-              Link 1
-            </a>
-
-            <a href="#" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-              Link 2
-            </a>
-
-            <!-- DROPDOWN IN MOBILE -->
-            <div x-data="{ dropdownOpen: false }" class="relative">
-              <button @click="dropdownOpen = !dropdownOpen" type="button"
-                class="w-full flex justify-between items-center text-base text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50">
-                <span>Link +</span>
-                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
+      <nav class="hidden md:flex space-x-8">
+        {% for link in linklists.main-menu.links %}
+          {% if link.links != blank %}
+            <div class="group relative">
+              <button class="text-gray-600 hover:text-gray-900 font-medium flex items-center space-x-1">
+                <span>{{ link.title }}</span>
+                <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-700" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
-              <div x-show="dropdownOpen" class="grid gap-y-2 py-2 pl-5" x-transition>
-                <a href="#" class="block text-gray-500 hover:text-gray-900 text-sm py-1">Sublink 1</a>
-                <a href="#" class="block text-gray-500 hover:text-gray-900 text-sm py-1">Sublink 2</a>
-                <a href="#" class="block text-gray-500 hover:text-gray-900 text-sm py-1">Sublink 3</a>
+              <!-- Dropdown -->
+              <div
+                class="hidden group-hover:block absolute bg-white shadow-lg rounded-lg mt-2 py-3 min-w-[180px] z-20">
+                {% for sublink in link.links %}
+                  <a href="{{ sublink.url }}"
+                    class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">
+                    {{ sublink.title }}
+                  </a>
+                {% endfor %}
               </div>
             </div>
-          </nav>
-        </div>
+          {% else %}
+            <a href="{{ link.url }}" class="text-gray-600 hover:text-gray-900 font-medium">
+              {{ link.title }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <!-- RIGHT SIDE LINKS -->
+      <div class="hidden md:flex items-center space-x-5">
+        <a href="/cart" class="text-gray-600 hover:text-gray-900">Cart</a>
+        {% if customer %}
+          <a href="/account" class="text-gray-600 hover:text-gray-900">Account</a>
+          <a href="/account/logout" class="text-gray-600 hover:text-gray-900">Logout</a>
+        {% else %}
+          <a href="/account/login" class="text-gray-600 hover:text-gray-900">Login</a>
+          <a href="/account/register" class="text-gray-600 hover:text-gray-900">Register</a>
+        {% endif %}
       </div>
+
+      <!-- MOBILE MENU BUTTON -->
+      <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-500 hover:text-gray-900 focus:outline-none">
+        {% icon-shopping-bag %}
+      </button>
+
     </div>
   </div>
-</div>
 
-<!-- ✅ Include Alpine.js -->
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- MOBILE MENU -->
+  <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white px-4 py-4">
+    {% for link in linklists.main-menu.links %}
+      {% if link.links != blank %}
+        <div class="mb-3">
+          <button class="w-full flex justify-between items-center text-gray-600 hover:text-gray-900 font-medium py-2"
+            onclick="this.nextElementSibling.classList.toggle('hidden')">
+            <span>{{ link.title }}</span>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="hidden pl-4 space-y-2">
+            {% for sublink in link.links %}
+              <a href="{{ sublink.url }}" class="block text-sm text-gray-600 hover:text-gray-900">
+                {{ sublink.title }}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <a href="{{ link.url }}" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">
+          {{ link.title }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </nav>
+</header>
+
+<!-- Simple JS toggle -->
+<script>
+  document.getElementById('mobile-menu-toggle').addEventListener('click', function () {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>
