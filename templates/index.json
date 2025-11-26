@@ -1,6 +1,6 @@
 {
   "sections": {
-    "hero": { "type": "hero" }
+    "hero": { "type": "custom-hero" }
   },
   "order": ["hero"]
 }
