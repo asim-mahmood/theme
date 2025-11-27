@@ -1,7 +1,7 @@
 <section id="{{ section.id }}" class="hero-section">
   {% if section.settings.image %}
     <div class="hero-image">
-      <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ section.settings.alt }}">
+      {{ section.settings.image | image_url: width: 2048 | image_tag: alt: section.settings.alt }}
     </div>
   {% endif %}
   <div class="hero-content">

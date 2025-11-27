@@ -1,17 +1,72 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>{{ page_title }}</title>
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page_title }}</title>
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ content_for_header }}
-</head>
-<body class="bg-red-100">
-  {% render 'header' %}
-  <main role="main">
+  </head>
+  <body>
+    {% section 'header' %}
+    <main role="main">
+      {{ content_for_layout }}
+    </main>
+    {% section 'footer' %}
 
-    {{ content_for_layout }}
-  </main>
-  {% render 'footer' %}
-</body>
+    {{ content_for_footer }}
+    {% section 'cart-drawer' %}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const drawer = document.getElementById('cart-drawer');
+        const panel = document.getElementById('cart-panel');
+        const overlay = document.getElementById('cart-overlay');
+        const openBtn = document.getElementById('open-cart');
+        const closeBtn = document.getElementById('close-cart');
+        const cartContent = document.getElementById('cart-content');
+
+        function openDrawer() {
+          drawer.classList.remove('hidden');
+          setTimeout(() => {
+            overlay.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+          }, 10);
+
+          // Load dynamic Shopify cart HTML
+          fetch('/cart.js')
+            .then((res) => res.json())
+            .then((cart) => {
+              cartContent.innerHTML = '';
+
+              if (cart.items.length === 0) {
+                cartContent.innerHTML = '<p class="text-gray-500">Your cart is empty.</p>';
+                return;
+              }
+
+              cart.items.forEach((item) => {
+                cartContent.innerHTML += `
+                  <div class="flex items-center justify-between py-3 border-b">
+                    <div>
+                      <p class="font-medium text-gray-800">${item.product_title}</p>
+                      <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
+                    </div>
+                    <p class="font-semibold">${(item.line_price / 100).toFixed(2)}</p>
+                  </div>
+                `;
+              });
+            });
+        }
+
+        function closeDrawer() {
+          overlay.classList.remove('opacity-100');
+          panel.classList.add('translate-x-full');
+          setTimeout(() => drawer.classList.add('hidden'), 300);
+        }
+
+        openBtn.addEventListener('click', openDrawer);
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+      });
+    </script>
+  </body>
 </html>

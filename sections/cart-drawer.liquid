@@ -1,0 +1,28 @@
+<!-- CART DRAWER -->
+<div
+  id="cart-drawer"
+  class="fixed inset-0 z-40 hidden"
+>
+  <!-- Background overlay -->
+  <div
+    id="cart-overlay"
+    class="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+  ></div>
+
+  <!-- Drawer panel -->
+  <div
+    id="cart-panel"
+    class="absolute right-0 top-0 h-full w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 overflow-y-auto"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b">
+      <h2 class="text-lg font-semibold">Your Cart</h2>
+      <button id="close-cart" class="text-gray-600 hover:text-gray-900">✕</button>
+    </div>
+
+    <!-- Dynamic Cart Content -->
+    <div id="cart-content" class="p-4">
+      <p class="text-gray-500 text-sm">Loading cart...</p>
+    </div>
+  </div>
+</div>
