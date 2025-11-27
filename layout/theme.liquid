@@ -21,12 +21,18 @@
         const drawer = document.getElementById('cart-drawer');
         const panel = document.getElementById('cart-panel');
         const overlay = document.getElementById('cart-overlay');
-        const openBtn = document.getElementById('open-cart');
         const closeBtn = document.getElementById('close-cart');
+
+        // NEW: support both desktop + mobile buttons
+        const openButtons = [document.getElementById('open-cart'), document.getElementById('open-cart-mobile')].filter(
+          (btn) => btn !== null
+        );
+
         const cartContent = document.getElementById('cart-content');
 
         function openDrawer() {
           drawer.classList.remove('hidden');
+
           setTimeout(() => {
             overlay.classList.add('opacity-100');
             panel.classList.remove('translate-x-full');
@@ -45,14 +51,14 @@
 
               cart.items.forEach((item) => {
                 cartContent.innerHTML += `
-                  <div class="flex items-center justify-between py-3 border-b">
-                    <div>
-                      <p class="font-medium text-gray-800">${item.product_title}</p>
-                      <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
-                    </div>
-                    <p class="font-semibold">${(item.line_price / 100).toFixed(2)}</p>
-                  </div>
-                `;
+            <div class="flex items-center justify-between py-3 border-b">
+              <div>
+                <p class="font-medium text-gray-800">${item.product_title}</p>
+                <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
+              </div>
+              <p class="font-semibold">${(item.line_price / 100).toFixed(2)}</p>
+            </div>
+          `;
               });
             });
         }
@@ -63,7 +69,14 @@
           setTimeout(() => drawer.classList.add('hidden'), 300);
         }
 
-        openBtn.addEventListener('click', openDrawer);
+        // Attach to ALL open-cart buttons
+        openButtons.forEach((btn) => {
+          btn.addEventListener('click', (event) => {
+            event.stopPropagation(); // prevents dropdown interference
+            openDrawer();
+          });
+        });
+
         closeBtn.addEventListener('click', closeDrawer);
         overlay.addEventListener('click', closeDrawer);
       });
