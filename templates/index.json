@@ -1,6 +1,9 @@
 {
   "sections": {
-    "hero": { "type": "custom-hero" }
+    "hero": { "type": "custom-hero" },
+     "footer": {
+      "type": "footer"
+    }
   },
-  "order": ["hero"]
+  "order": ["hero", "footer"]
 }
