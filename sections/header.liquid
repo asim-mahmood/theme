@@ -1,7 +1,8 @@
-<!-- NAVBAR -->
+<!-- HEADER SECTION WITH THEME EDITOR MENU SELECTION -->
 <header class="border-b border-gray-200 bg-white">
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center py-6">
+
       <!-- LOGO / STORE NAME -->
       <div class="flex items-center space-x-2">
         <a href="{{ routes.root_url }}" class="flex items-center space-x-2">
@@ -15,93 +16,43 @@
 
       <!-- DESKTOP MENU -->
       <nav class="hidden md:flex space-x-8">
-        {% for link in linklists['main-menu'].links %}
+        {% assign selected_menu = section.settings.header_menu %}
+        {% for link in linklists[selected_menu].links %}
           {% if link.links != blank %}
-            <!-- DROPDOWN ITEM -->
             <div class="group relative">
               <button class="text-gray-600 hover:text-gray-900 font-medium flex items-center space-x-1">
                 <span>{{ link.title }}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
-
-              <!-- Dropdown -->
               <div class="hidden group-hover:block absolute bg-white shadow-lg rounded-lg mt-2 py-3 min-w-[180px] z-20">
                 {% for sublink in link.links %}
-                  <a
-                    href="{{ sublink.url }}"
-                    class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  >
-                    {{ sublink.title }}
-                  </a>
+                  <a href="{{ sublink.url }}" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50">{{ sublink.title }}</a>
                 {% endfor %}
               </div>
             </div>
-
           {% else %}
-            <!-- SINGLE ITEM -->
-            <a href="{{ link.url }}" class="text-gray-600 hover:text-gray-900 font-medium">
-              {{ link.title }}
-            </a>
+            <a href="{{ link.url }}" class="text-gray-600 hover:text-gray-900 font-medium">{{ link.title }}</a>
           {% endif %}
         {% endfor %}
       </nav>
 
-      <!-- RIGHT SIDE ICON LINKS -->
-      <div  class="hidden md:flex items-center space-x-5">
-        <!-- Cart -->
-        {% comment %}
-          <a href="{{ routes.cart_url }}" class="text-gray-600 hover:text-gray-900 flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-            </svg>
-          </a>
-        {% endcomment %}
+      <!-- RIGHT ICONS -->
+      <div class="hidden md:flex items-center space-x-5">
         <button id="open-cart" class="text-gray-600 hover:text-gray-900 flex items-center cursor-pointer">
-          <!-- Your SVG stays the same -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
           </svg>
         </button>
 
         {% if customer %}
-          <!-- Account -->
           <a href="{{ routes.account_url }}" class="text-gray-600 hover:text-gray-900 flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
             </svg>
           </a>
-
-          <a href="{{ routes.account_logout_url }}" class="text-gray-600 hover:text-gray-900"> Logout </a>
+          <a href="{{ routes.account_logout_url }}" class="text-gray-600 hover:text-gray-900">Logout</a>
         {% else %}
           <a href="{{ routes.account_login_url }}" class="text-gray-600 hover:text-gray-900">Login</a>
           <a href="{{ routes.account_register_url }}" class="text-gray-600 hover:text-gray-900">Register</a>
@@ -110,14 +61,7 @@
 
       <!-- MOBILE MENU BUTTON -->
       <button id="mobile-menu-toggle" class="md:hidden p-2 text-gray-500 hover:text-gray-900">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
       </button>
@@ -125,86 +69,77 @@
   </div>
 
   <!-- MOBILE MENU -->
-  <!-- MOBILE MENU -->
-<nav id="mobile-menu" class="hidden md:hidden  bg-white px-4 py-4">
+  <nav id="mobile-menu" class="hidden md:hidden bg-white px-4 py-4">
 
-  <!-- MAIN LINKS -->
-  {% for link in linklists['main-menu'].links %}
-    {% if link.links != blank %}
-      <div class="mb-3">
-        <button
-          class="w-full flex justify-between items-center text-gray-600 hover:text-gray-900 font-medium py-2"
-          onclick="this.nextElementSibling.classList.toggle('hidden')"
-        >
-          <span>{{ link.title }}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-          </svg>
-        </button>
-
-        <div class="hidden pl-4 space-y-2">
-          {% for sublink in link.links %}
-            <a href="{{ sublink.url }}" class="block text-sm text-gray-600 hover:text-gray-900">
-              {{ sublink.title }}
-            </a>
-          {% endfor %}
+    {% assign selected_menu = section.settings.header_menu %}
+    {% for link in linklists[selected_menu].links %}
+      {% if link.links != blank %}
+        <div class="mb-3">
+          <button class="w-full flex justify-between items-center text-gray-600 hover:text-gray-900 font-medium py-2" onclick="this.nextElementSibling.classList.toggle('hidden')">
+            <span>{{ link.title }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="hidden pl-4 space-y-2">
+            {% for sublink in link.links %}
+              <a href="{{ sublink.url }}" class="block text-sm text-gray-600 hover:text-gray-900">{{ sublink.title }}</a>
+            {% endfor %}
+          </div>
         </div>
-      </div>
-    {% else %}
-      <a href="{{ link.url }}" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">
-        {{ link.title }}
-      </a>
-    {% endif %}
-  {% endfor %}
+      {% else %}
+        <a href="{{ link.url }}" class="block py-2 text-gray-600 hover:text-gray-900 font-medium">{{ link.title }}</a>
+      {% endif %}
+    {% endfor %}
 
-  <!-- MOBILE ICONS + AUTH LINKS -->
-  <div class=" space-y-3">
+    <div class="space-y-3">
+      <button id="open-cart-mobile" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 cursor-pointer">
+        <span>Cart</span>
+      </button>
 
-    <!-- Cart -->
-    <button id="open-cart-mobile" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 cursor-pointer">
-  <span>Cart</span>
-</button>
-
-
-    {% if customer %}
-      <!-- Account -->
-      <a href="{{ routes.account_url }}" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z 
-               M4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 
-               17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-        </svg>
-        <span>Account</span>
-      </a>
-
-      <a href="{{ routes.account_logout_url }}" class="block text-gray-600 hover:text-gray-900">
-        Logout
-      </a>
-
-    {% else %}
-      <!-- LOGIN -->
-      <a href="{{ routes.account_login_url }}" class="block text-gray-600 hover:text-gray-900">
-        Login
-      </a>
-
-      <!-- REGISTER -->
-      <a href="{{ routes.account_register_url }}" class="block text-gray-600 hover:text-gray-900">
-        Register
-      </a>
-    {% endif %}
-  </div>
-
-</nav>
-
+      {% if customer %}
+        <a href="{{ routes.account_url }}" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z M4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+          <span>Account</span>
+        </a>
+        <a href="{{ routes.account_logout_url }}" class="block text-gray-600 hover:text-gray-900">Logout</a>
+      {% else %}
+        <a href="{{ routes.account_login_url }}" class="block text-gray-600 hover:text-gray-900">Login</a>
+        <a href="{{ routes.account_register_url }}" class="block text-gray-600 hover:text-gray-900">Register</a>
+      {% endif %}
+    </div>
+  </nav>
 </header>
 
-<!-- SIMPLE JS TOGGLE -->
+<!-- JS TOGGLE -->
 <script>
   document.getElementById('mobile-menu-toggle').addEventListener('click', function () {
     document.getElementById('mobile-menu').classList.toggle('hidden');
   });
 </script>
+
+{% schema %}
+{
+  "name": "Custom Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "header_menu",
+      "label": "Select Header Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Header"
+    }
+  ]
+}
+{% endschema %}
