@@ -1,14 +1,21 @@
 <section id="{{ section.id }}" class="relative w-full">
+  <div class="absolute inset-0 w-full h-full">
   {% if section.settings.image %}
-    <!-- Background Image -->
-    <div class="absolute inset-0 w-full h-full">
-      {{
-        section.settings.image
-        | image_url: width: 2400
-        | image_tag: class: 'w-full h-full object-cover object-center', alt: section.settings.alt
-      }}
-    </div>
+    {{ section.settings.image 
+      | image_url: width: 2400 
+      | image_tag: class: 'w-full h-full object-cover object-center', alt: section.settings.alt 
+    }}
+  {% else %}
+    <img 
+       width="2400"
+  height="1200"
+      src="{{ 'placeholder.webp' | asset_url }}" 
+      class="w-full h-full object-cover object-center" 
+      alt="Placeholder image"
+    >
   {% endif %}
+</div>
+
 
   <!-- Overlay -->
   <div class="absolute inset-0 bg-black/40"></div>
