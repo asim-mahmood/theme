@@ -1,0 +1,221 @@
+<section class="max-w-4xl mx-auto px-6 py-12">
+
+  {%- comment -%}
+  HERO IMAGE
+  {%- endcomment -%}
+  {% if article.image %}
+    <img 
+      src="{{ article.image | image_url: width: section.settings.hero_image_width }}"
+      alt="{{ article.title }}"
+      class="w-full rounded-xl mb-8"
+    >
+  {% endif %}
+
+  {%- comment -%}
+  TITLE + META
+  {%- endcomment -%}
+  <h1 class="text-4xl font-bold mb-4">{{ article.title }}</h1>
+
+  {% if section.settings.show_excerpt and article.excerpt != blank %}
+    <p class="text-gray-600 text-lg mb-6">{{ article.excerpt }}</p>
+  {% endif %}
+
+  <p class="text-gray-500 text-sm flex flex-wrap items-center gap-2 mb-10">
+
+    {% if article.author %}
+      <span>By <strong>{{ article.author }}</strong></span>
+    {% endif %}
+
+    <span>•</span>
+
+    {% assign category = article.metafields.custom.category %}
+    {% if category %}
+      <span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{{ category }}</span>
+    {% elsif article.tags.size > 0 %}
+      <span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{{ article.tags.first }}</span>
+    {% endif %}
+
+    <span>•</span>
+
+    <span>{{ article.published_at | date: "%B %d, %Y" }}</span>
+  </p>
+
+  {%- comment -%}
+  TABLE OF CONTENTS (Auto extract h2)
+  {%- endcomment -%}
+  {% if section.settings.show_toc %}
+    {% assign toc_items = article.content
+      | split: '<h2'
+      | slice: 1, 20 %}
+
+    {% if toc_items.size > 0 %}
+      <div class="mb-10 p-6 border rounded-xl bg-gray-50">
+        <h3 class="font-semibold text-lg mb-3">Table of contents</h3>
+        <ul class="space-y-2">
+          {% for h2_block in toc_items %}
+            {% assign title = h2_block | split: '</h2>' | first | replace: '>', '' %}
+            {% assign anchor = title | handle %}
+            <li>
+              <a href="#{{ anchor }}" class="text-blue-600 hover:underline">{{ title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%}
+  MAIN ARTICLE BODY (With auto anchor IDs for H2)
+  {%- endcomment -%}
+  <div class="prose max-w-none mb-12">
+    {{ article.content | replace: '<h2', '<h2 id="' | replace: '">', '">' }}
+  </div>
+
+  {%- comment -%}
+  TAGS
+  {%- endcomment -%}
+  {% if section.settings.show_tags and article.tags.size > 0 %}
+    <div class="flex flex-wrap gap-2 mb-12">
+      {% for tag in article.tags %}
+        <a 
+          href="{{ blog.url }}/tagged/{{ tag | handle }}"
+          class="px-3 py-1 bg-gray-200 rounded-full text-sm hover:bg-gray-300 transition"
+        >{{ tag }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  SHARE BUTTONS
+  {%- endcomment -%}
+  {% if section.settings.show_share %}
+    <div class="mb-12">
+      <p class="font-medium mb-2">Share:</p>
+      <div class="flex gap-4 text-xl">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ article.url | url_escape }}" target="_blank">🔗 Facebook</a>
+        <a href="https://twitter.com/intent/tweet?url={{ article.url | url_escape }}" target="_blank">🔗 Twitter</a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ article.url | url_escape }}" target="_blank">🔗 LinkedIn</a>
+      </div>
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  AUTHOR BIO
+  {%- endcomment -%}
+  {% if section.settings.show_author_bio %}
+    <div class="border p-6 rounded-xl mb-12 bg-gray-50">
+      <h3 class="text-lg font-semibold mb-2">About the author</h3>
+      <p>{{ section.settings.author_bio_text }}</p>
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  NEWSLETTER
+  {%- endcomment -%}
+  {% if section.settings.show_newsletter %}
+    <div class="p-8 border rounded-xl mb-12 bg-gray-100">
+      <h3 class="text-xl font-bold mb-3">
+        {{ section.settings.newsletter_title }}
+      </h3>
+      <form method="post" action="/contact#contact_form" id="contact_form" class="flex gap-4">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          placeholder="{{ section.settings.newsletter_placeholder }}" 
+          class="flex-1 px-4 py-2 rounded border"
+        >
+        <button class="px-6 py-2 bg-black text-white rounded">
+          {{ section.settings.newsletter_button_text }}
+        </button>
+      </form>
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  CALL TO ACTION
+  {%- endcomment -%}
+  {% if section.settings.show_cta %}
+    <div class="p-10 border rounded-xl bg-blue-50 mb-12 text-center">
+      <h3 class="text-2xl font-bold mb-3">{{ section.settings.cta_title }}</h3>
+      <p class="mb-4">{{ section.settings.cta_text }}</p>
+      <a href="{{ section.settings.cta_url }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg">
+        {{ section.settings.cta_button_text }}
+      </a>
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  RELATED ARTICLES
+  {%- endcomment -%}
+  {% if section.settings.show_related %}
+    {% assign related_articles = blog.articles | where: "tags", article.tags.first | reject: "id", article.id | limit: section.settings.related_limit %}
+
+    {% if related_articles.size > 0 %}
+      <h3 class="text-2xl font-bold mb-6">Related articles</h3>
+
+      <div class="grid md:grid-cols-3 gap-8 mb-12">
+        {% for related in related_articles %}
+          <a href="{{ related.url }}" class="block group">
+            {% if related.image %}
+              <img 
+                src="{{ related.image | image_url: width: 600 }}" 
+                class="rounded mb-3 group-hover:opacity-80 transition"
+              >
+            {% endif %}
+            <h4 class="font-semibold group-hover:text-blue-600 transition">
+              {{ related.title }}
+            </h4>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%}
+  COMMENTS
+  {%- endcomment -%}
+  {% if section.settings.show_comments %}
+    {% render 'article-comments' %}
+  {% endif %}
+
+</section>
+
+{% schema %}
+{
+  "name": "Main Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_excerpt", "default": true, "label": "Show excerpt" },
+    { "type": "checkbox", "id": "show_toc", "default": true, "label": "Show table of contents" },
+    { "type": "checkbox", "id": "show_author_bio", "default": true, "label": "Show author bio" },
+    { "type": "text", "id": "author_bio_text", "default": "Author bio goes here.", "label": "Author bio text" },
+    { "type": "checkbox", "id": "show_tags", "default": true, "label": "Show tags" },
+    { "type": "checkbox", "id": "show_share", "default": true, "label": "Show share buttons" },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "default": true,
+      "label": "Show newsletter signup"
+    },
+    { "type": "text", "id": "newsletter_title", "default": "Join our newsletter", "label": "Newsletter title" },
+    { "type": "text", "id": "newsletter_placeholder", "default": "Your email", "label": "Email placeholder" },
+    { "type": "text", "id": "newsletter_button_text", "default": "Subscribe", "label": "Button text" },
+    { "type": "checkbox", "id": "show_comments", "default": true, "label": "Show comments" },
+    { "type": "checkbox", "id": "show_related", "default": true, "label": "Show related articles" },
+    { "type": "range", "id": "related_limit", "min": 1, "max": 6, "default": 3, "label": "Number of related posts" },
+    { "type": "checkbox", "id": "show_cta", "default": false, "label": "Show call-to-action block" },
+    { "type": "text", "id": "cta_title", "default": "Download", "label": "CTA Title" },
+    { "type": "textarea", "id": "cta_text", "default": "", "label": "CTA Description" },
+    { "type": "url", "id": "cta_url", "default": "#", "label": "CTA Link" },
+    { "type": "text", "id": "cta_button_text", "default": "Download", "label": "CTA Button Text" },
+    {
+      "type": "range",
+      "id": "hero_image_width",
+      "min": 400,
+      "max": 2000,
+      "step": 100,
+      "default": 1600,
+      "label": "Hero image width"
+    }
+  ]
+}
+{% endschema %}

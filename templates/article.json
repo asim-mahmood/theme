@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main-article": {
+      "type": "main-article",
+      "settings": {
+        "show_excerpt": true,
+        "show_toc": true,
+        "show_author_bio": true,
+        "author_bio_text": "Author bio goes here.",
+        "show_tags": true,
+        "show_share": true,
+        "show_newsletter": true,
+        "newsletter_title": "Join our newsletter",
+        "newsletter_placeholder": "Your email",
+        "newsletter_button_text": "Subscribe",
+        "show_comments": true,
+        "show_related": true,
+        "related_limit": 3,
+        "show_cta": false,
+        "cta_title": "Download",
+        "cta_text": "",
+        "cta_url": "#",
+        "cta_button_text": "Download",
+        "hero_image_width": 1600
+      }
+    }
+  },
+  "order": ["main-article"]
+}
