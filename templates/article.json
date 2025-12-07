@@ -1,7 +1,7 @@
 {
   "sections": {
     "main-article": {
-      "type": "main-article",
+      "type": "main-blog",
       "settings": {
         "show_excerpt": true,
         "show_toc": true,

@@ -1,8 +1,9 @@
 {
   "sections": {
     "main-article": {
-      "type": "main-article"
+      "type": "main-blog"
     }
   },
   "order": ["main-article"]
 }
+    

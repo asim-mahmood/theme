@@ -1,18 +1,13 @@
 {
   "sections": {
-    "main-blog": {
-      "type": "main-blog",
+    "list-posts": {
+      "type": "list-posts",
       "settings": {
-        "blog_picker": "news",
-        "columns": "2",
-        "article_limit": 6,
-        "excerpt_length": 150,
-        "image_width": 800,
-        "read_more_text": "Read more →",
-        "enable_tags": true,
-        "enable_search": false
+        "blog": "news"
       }
     }
   },
-  "order": ["main-blog"]
+  "order": [
+    "list-posts"
+  ]
 }

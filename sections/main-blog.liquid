@@ -1,18 +1,18 @@
-<section class="max-w-4xl mx-auto px-6 py-12">
-
+<section class="max-w-7xl mx-auto px-6 py-12">
+     <a href="{{ blog.url }}" class="text-blue-600 hover:underline mb-4 inline-block">&larr; Back to News</a>
   <!-- Title -->
   <h1 class="text-4xl font-bold mb-4">{{ article.title }}</h1>
-
-  <!-- Excerpt -->
-  {% if section.settings.show_excerpt and article.excerpt != blank %}
-    <p class="text-gray-600 text-lg mb-6">{{ article.excerpt }}</p>
-  {% endif %}
-
-  <!-- Author + Date -->
-  <p class="text-gray-500 text-sm mb-6">
+    <p class="text-gray-500 text-sm mb-6">
     By {{ article.author }}
     • {{ article.published_at | date: "%B %d, %Y" }}
   </p>
+  <!-- Excerpt -->
+  {% if section.settings.show_excerpt and article.excerpt != blank %}
+    <p class="text-gray-600 text-lg">{{ article.excerpt }}</p>
+  {% endif %}
+
+  <!-- Author + Date -->
+  
 
   <!-- Hero Image -->
   {% if article.image %}
@@ -20,7 +20,7 @@
       src="{{ article.image | image_url: width: section.settings.hero_image_width }}"
       width="{{ article.image.width }}"
       height="{{ article.image.height }}"
-      class="w-full rounded-lg mb-8">
+      class="w-full rounded-lg my-8">
   {% endif %}
 
   <!-- Content -->
@@ -70,7 +70,6 @@
     { "type": "textarea", "id": "cta_text", "label": "CTA Text" },
     { "type": "url", "id": "cta_url", "label": "CTA URL" },
     { "type": "text", "id": "cta_button_text", "label": "CTA Button Text" },
-    { "type": "range", "id": "hero_image_width", "min": 800, "max": 2400, "default": 1600, "label": "Hero image width" }
   ]
 }
 {% endschema %}
