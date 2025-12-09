@@ -1,26 +1,21 @@
 <section class="max-w-7xl mx-auto px-6 py-12">
-     <a href="{{ blog.url }}" class="text-blue-600 hover:underline mb-4 inline-block">&larr; Back to News</a>
+  <a href="{{ blog.url }}" class="text-blue-600 hover:underline mb-4 inline-block">&larr; Back to News</a>
   <!-- Title -->
   <h1 class="text-4xl font-bold mb-4">{{ article.title }}</h1>
-    <p class="text-gray-500 text-sm mb-6">
-    By {{ article.author }}
-    • {{ article.published_at | date: "%B %d, %Y" }}
-  </p>
+  <p class="text-gray-500 text-sm mb-6">By {{ article.author }} • {{ article.published_at | date: '%B %d, %Y' }}</p>
   <!-- Excerpt -->
   {% if section.settings.show_excerpt and article.excerpt != blank %}
     <p class="text-gray-600 text-lg">{{ article.excerpt }}</p>
   {% endif %}
 
-  <!-- Author + Date -->
-  
-
   <!-- Hero Image -->
   {% if article.image %}
-    <img 
+    <img
       src="{{ article.image | image_url: width: section.settings.hero_image_width }}"
       width="{{ article.image.width }}"
       height="{{ article.image.height }}"
-      class="w-full rounded-lg my-8">
+      class="w-full rounded-lg my-8"
+    >
   {% endif %}
 
   <!-- Content -->
@@ -32,20 +27,121 @@
   {% if section.settings.show_tags and article.tags.size > 0 %}
     <div class="mb-10 flex flex-wrap gap-2">
       {% for tag in article.tags %}
-        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" 
-           class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+        <a
+          href="{{ blog.url }}/tagged/{{ tag | handle }}"
+          class="px-3 py-1 bg-gray-100 rounded-full text-sm"
+        >
           {{ tag }}
         </a>
       {% endfor %}
     </div>
   {% endif %}
 
-  <!-- Comments -->
-  {% if section.settings.show_comments %}
-    <!-- Comments section placeholder -->
-    <p class="text-gray-500 text-sm">Comments are currently unavailable.</p>
-  {% endif %}
+  {% if blog.comments_enabled? %}
+    <div id="comments" class="my-8">
+      {% if article.comments_count > 0 %}
+        <h2 class="text-2xl font-bold mb-4">
+          {{ article.comments_count }} Comment{% if article.comments_count > 1 %}s{% endif %}
+        </h2>
+        <div class="space-y-4">
+          {% for comment in article.comments %}
+            <div class="border p-4 rounded-lg">
+              <p class="font-semibold">{{ comment.author }}</p>
+              <p class="text-sm text-gray-500 mb-2">{{ comment.created_at | date: '%B %d, %Y' }}</p>
+              <div>{{ comment.content }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <h5 class="text-2xl font-bold mb-4">No comments yet</h5>
+      {% endif %}
 
+      <div class="mt-8 bg-gray-50 p-6 rounded-lg">
+        {% form 'new_comment', article %}
+          <!-- SUCCESS MESSAGE -->
+          {% if form.posted_successfully? %}
+            <div
+              id="comment-success"
+              class="mb-4 p-4 rounded-lg bg-green-100 text-green-700 border border-green-300 transition-opacity duration-700"
+            >
+              {% if blog.moderated? %}
+                <p>Your comment has been submitted and is awaiting approval.</p>
+              {% else %}
+                <p>Your comment has been posted successfully!</p>
+              {% endif %}
+            </div>
+
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                setTimeout(() => {
+                  const msg = document.getElementById('comment-success');
+                  if (msg) {
+                    msg.style.opacity = '0';
+                    setTimeout(() => (msg.style.display = 'none'), 700);
+                  }
+                }, 2500); // show for 2.5 seconds
+              });
+            </script>
+          {% endif %}
+
+          <!-- ERROR HANDLING -->
+          {% if form.errors %}
+            <div class="mb-4 p-4 rounded-lg bg-red-100 text-red-700 border border-red-300">
+              <p class="font-semibold mb-2">Please fix the following errors:</p>
+              <ul class="list-disc list-inside">
+                {% for field in form.errors %}
+                  <li>{{ form.errors.messages[field] }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          <h3 class="text-xl font-bold mb-4">Leave a comment</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mb-4">
+              <label for="CommentAuthor" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                name="comment[author]"
+                id="CommentAuthor"
+                class="w-full py-2 px-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                value="{{ form.author }}"
+                required
+              >
+            </div>
+
+            <div class="mb-4">
+              <label for="CommentEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                name="comment[email]"
+                id="CommentEmail"
+                class="w-full p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                value="{{ form.email }}"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="CommentBody" class="block text-sm font-medium text-gray-700 mb-1 p-3">Message</label>
+            <textarea
+              name="comment[body]"
+              id="CommentBody"
+              rows="5"
+              class="w-full !p-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              required
+            >{{ form.body }}</textarea>
+          </div>
+
+          <button type="submit" class="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors">
+            Post comment
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -66,10 +162,8 @@
     { "type": "checkbox", "id": "show_related", "label": "Show Related Posts", "default": false },
     { "type": "range", "id": "related_limit", "min": 1, "max": 6, "default": 3, "label": "Related articles limit" },
     { "type": "checkbox", "id": "show_cta", "label": "Show CTA", "default": false },
-    { "type": "text", "id": "cta_title", "label": "CTA Title" },
-    { "type": "textarea", "id": "cta_text", "label": "CTA Text" },
-    { "type": "url", "id": "cta_url", "label": "CTA URL" },
-    { "type": "text", "id": "cta_button_text", "label": "CTA Button Text" },
+
+    { "type": "checkbox", "id": "enable_comments", "label": "Enable Comments", "default": true }
   ]
 }
 {% endschema %}
