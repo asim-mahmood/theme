@@ -5,7 +5,7 @@
   <p class="text-gray-500 text-sm mb-6">By {{ article.author }} • {{ article.published_at | date: '%B %d, %Y' }}</p>
   <!-- Excerpt -->
   {% if section.settings.show_excerpt and article.excerpt != blank %}
-    <p class="text-gray-600 text-lg">{{ article.excerpt }}</p>
+    <p class="text-gray-600 text-lg" itemprop="description">{{ article.excerpt }}</p>
   {% endif %}
 
   <!-- Hero Image -->
@@ -128,6 +128,33 @@
     </div>
   {% endif %}
 </article>
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ article.title | json }},
+    "articleBody": {{ article.content | strip_html | json }},
+    {% if article.excerpt != blank %}
+        "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+        "image": [
+            {{ article.image | img_url: "medium" | prepend: 'https:' | json }} 
+        ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: format: "default" | json }},
+    "dateCreated": {{ article.created_at | date: format: "default" | json }},
+    "author": {
+        "@type": "Person",
+        "name": {{ article.author | json }}
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
+    }
+}
+</script>
+
 
 {% schema %}
 {
